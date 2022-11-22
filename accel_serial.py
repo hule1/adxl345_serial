@@ -28,14 +28,14 @@ data_raw = []
 data_corrupt = False
 data_done = False
 
-q = Queue(maxsize=0)
-r = Queue(maxsize=0)
-s = Queue(maxsize=0)
+# q = Queue(maxsize=0)
+# r = Queue(maxsize=0)
+# s = Queue(maxsize=0)
 
 BUFSIZE = 1280
-ip_port = ('0.0.0.0', 42299)
-server = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)  # udp协议
-server.bind(ip_port)
+# ip_port = ('0.0.0.0', 42299)
+# server = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)  # udp协议
+# server.bind(ip_port)
 
 def Serial():
     global q, r, s
