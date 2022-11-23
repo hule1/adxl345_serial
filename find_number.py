@@ -24,8 +24,8 @@ class Draw:
 
     def main(self):
 
-        # th1 = threading.Thread(target=self.Serial)
-        # th1.start()
+        th1 = threading.Thread(target=self.Serial)
+        th1.start()
 
         self.data_processing()
         self.plot_init()
@@ -55,20 +55,22 @@ class Draw:
     def plot_data(self):
 
         n = self.mSerial.inWaiting()
-        if(n):
+        if (n):
             list_line = self.mSerial.readline().decode()
             list_number = re.findall("\d+", list_line)
+            list_number = list(map(int, list_number))
+            print(list_number)
             if self.idxPlot < self.historyLength:
                 self.data_x[self.idxPlot] = list_number[0]
                 self.data_y[self.idxPlot] = list_number[1]
-                self.data_y[self.idxPlot] = list_number[2]
+                self.data_z[self.idxPlot] = list_number[2]
                 self.idxPlot += 1
             else:
                 self.data_x[:-1] = self.data_x[1:]
                 self.data_x[self.idxPlot - 1] = list_number[0]
-                self.data_y[:-1] = self.data_x[1:]
+                self.data_y[:-1] = self.data_y[1:]
                 self.data_y[self.idxPlot - 1] = list_number[1]
-                self.data_z[:-1] = self.data_x[1:]
+                self.data_z[:-1] = self.data_z[1:]
                 self.data_z[self.idxPlot - 1] = list_number[2]
         self.curve_x.setData(self.data_x)
         self.curve_y.setData(self.data_y)
@@ -83,17 +85,18 @@ class Draw:
         self.win.resize(800, 500)  # 小窗口大小
         self.p = self.win.addPlot()  # 把图p加入到窗口中
         self.p.showGrid(x=True, y=True)  # 把X和Y的表格打开
-        self.p.setRange(xRange=[0, self.historyLength], yRange=[-4095, 4095], padding=0)
+        self.p.setRange(xRange=[0, self.historyLength], yRange=[-1000, 1000], padding=0)
         self.p.setLabel(axis='left', text='y / V')  # 靠左
         self.p.setLabel(axis='bottom', text='x / point')
         self.p.setTitle('加速度波形图')  # 表格的名字
 
-        self.curve_x = self.p.plot(pen=pg.mkPen(width=5, color='r'))  # 绘制一个图形
+        self.curve_x = self.p.plot(pen=pg.mkPen(width=2, color='r'))  # 绘制一个图形
         self.curve_x.setData(self.data_x)
-        self.curve_y = self.p.plot(pen=pg.mkPen(width=5, color='g'))  # 绘制一个图形
+        self.curve_y = self.p.plot(pen=pg.mkPen(width=2, color='g'))  # 绘制一个图形
         self.curve_y.setData(self.data_y)
-        self.curve_z = self.p.plot(pen=pg.mkPen(width=5, color='y'))  # 绘制一个图形
+        self.curve_z = self.p.plot(pen=pg.mkPen(width=2, color='y'))  # 绘制一个图形
         self.curve_z.setData(self.data_z)
+
 
 if __name__ == '__main__':
     draw = Draw()

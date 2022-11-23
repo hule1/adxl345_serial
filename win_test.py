@@ -26,8 +26,7 @@ p = win.addPlot()  # 把图p加入到窗口中
 p.showGrid(x=True, y=True)  # 把X和Y的表格打开
 p.setRange(xRange=[0, historyLength], yRange=[-4095, 4095], padding=0)
 p.setLabel(axis='left', text='y / V')  # 靠左
-p.setLabel(axis='bottom', text='x / point')
-p.setTitle('电压波形图')  # 表格的名字
+p.setLabel(axis='bottom', text='x / point')p.setTitle('电压波形图')  # 表格的名字
 
 curve = p.plot(pen=pg.mkPen(width=3, color='g'))  # 绘制一个图形
 curve.setData(data)
