@@ -15,11 +15,24 @@ class Draw:
         self.data_z = array.array('i')
         self.historyLength = 200
         self.idxPlot = 0
+        self.win = None
+        self.app = None
+        self.p = None
+        self.curve_z = None
+        self.curve_y = None
+        self.curve_x = None
+
     def main(self):
-        self.Serial()
+
+        # th1 = threading.Thread(target=self.Serial)
+        # th1.start()
+
         self.data_processing()
-        self.plot_data()
-        self.plot_init(self)
+        self.plot_init()
+        timer = pg.QtCore.QTimer()
+        timer.timeout.connect(self.plot_data)  # 定时刷新数据显示
+        timer.start(1)  # 多少ms调用一次
+        self.app.exec_()
 
     def Serial(self):
         portx = 'COM5'
@@ -40,39 +53,48 @@ class Draw:
         self.data_z = np.zeros(self.historyLength).__array__('d')
 
     def plot_data(self):
-        while True:
-            n = self.mSerial.inWaiting()
-            if(n):
-                list_line = self.mSerial.readline().decode()
-                list_number = re.findall("\d+", list_line)
-                if self.idxPlot < self.historyLength:
-                    self.data_x[self.idxPlot] = list_number[0]
-                    self.data_y[self.idxPlot] = list_number[1]
-                    self.data_y[self.idxPlot] = list_number[2]
-                    self.idxPlot += 1
-                else:
-                    self.data_x[:-1] = self.data_x[1:]
-                    self.data_x[self.idxPlot - 1] = list_number[0]
-                    self.data_y[:-1] = self.data_x[1:]
-                    self.data_y[self.idxPlot - 1] = list_number[1]
-                    self.data_z[:-1] = self.data_x[1:]
-                    self.data_z[self.idxPlot - 1] = list_number[2]
-                print(self.data_x)
+
+        n = self.mSerial.inWaiting()
+        if(n):
+            list_line = self.mSerial.readline().decode()
+            list_number = re.findall("\d+", list_line)
+            if self.idxPlot < self.historyLength:
+                self.data_x[self.idxPlot] = list_number[0]
+                self.data_y[self.idxPlot] = list_number[1]
+                self.data_y[self.idxPlot] = list_number[2]
+                self.idxPlot += 1
+            else:
+                self.data_x[:-1] = self.data_x[1:]
+                self.data_x[self.idxPlot - 1] = list_number[0]
+                self.data_y[:-1] = self.data_x[1:]
+                self.data_y[self.idxPlot - 1] = list_number[1]
+                self.data_z[:-1] = self.data_x[1:]
+                self.data_z[self.idxPlot - 1] = list_number[2]
+        self.curve_x.setData(self.data_x)
+        self.curve_y.setData(self.data_y)
+        self.curve_z.setData(self.data_z)
+
     def plot_init(self):
         pg.setConfigOption('background', 'w')
         pg.setConfigOption('foreground', 'k')
-        app = pg.mkQApp()  # 建立app
-        win = pg.GraphicsWindow()  # 建立窗口
-        win.setWindowTitle(u'pyqtgraph逐点画波形图')
-        win.resize(800, 500)  # 小窗口大小
-        p = win.addPlot()  # 把图p加入到窗口中
-        p.showGrid(x=True, y=True)  # 把X和Y的表格打开
-        p.setRange(xRange=[0, self.historyLength], yRange=[-4095, 4095], padding=0)
-        p.setLabel(axis='left', text='y / V')  # 靠左
-        p.setLabel(axis='bottom', text='x / point')
-        p.setTitle('加速度波形图')  # 表格的名字
+        self.app = pg.mkQApp()  # 建立app
+        self.win = pg.GraphicsWindow()  # 建立窗口
+        self.win.setWindowTitle(u'pyqtgraph逐点画波形图')
+        self.win.resize(800, 500)  # 小窗口大小
+        self.p = self.win.addPlot()  # 把图p加入到窗口中
+        self.p.showGrid(x=True, y=True)  # 把X和Y的表格打开
+        self.p.setRange(xRange=[0, self.historyLength], yRange=[-4095, 4095], padding=0)
+        self.p.setLabel(axis='left', text='y / V')  # 靠左
+        self.p.setLabel(axis='bottom', text='x / point')
+        self.p.setTitle('加速度波形图')  # 表格的名字
 
+        self.curve_x = self.p.plot(pen=pg.mkPen(width=5, color='r'))  # 绘制一个图形
+        self.curve_x.setData(self.data_x)
+        self.curve_y = self.p.plot(pen=pg.mkPen(width=5, color='g'))  # 绘制一个图形
+        self.curve_y.setData(self.data_y)
+        self.curve_z = self.p.plot(pen=pg.mkPen(width=5, color='y'))  # 绘制一个图形
+        self.curve_z.setData(self.data_z)
 
 if __name__ == '__main__':
     draw = Draw()
-    draw.main()
+    draw = draw.main()

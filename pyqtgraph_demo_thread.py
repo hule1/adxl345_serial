@@ -35,6 +35,12 @@ if __name__ == "__main__":
     historyLength = 200  # 横坐标长度
     data = np.zeros(historyLength).__array__('d')  # 把数组长度定下来
 
+    import array
+    import serial
+    import threading
+    import numpy as np
+    import time
+    import pyqtgraph as pg
     pg.setConfigOption('background', 'w')
     pg.setConfigOption('foreground', 'k')
     app = pg.mkQApp()  # 建立app
