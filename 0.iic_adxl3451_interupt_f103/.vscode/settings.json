@@ -1,0 +1,6 @@
+{
+    "files.associations": {
+        "pbdata.h": "c",
+        "uart1.h": "c"
+    }
+}

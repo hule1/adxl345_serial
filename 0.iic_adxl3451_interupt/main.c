@@ -95,7 +95,6 @@ int main(void)
 #pragma vector=0x06
 __interrupt void EXTI_PORTB_IRQHandler(void)
 {
-  //printf("进入中断");
   u8 Data = 0x00;
    u16  x=0,y=0,z =0 ;
   PB_CR2_C20=0;//禁止PB0端口外部中断

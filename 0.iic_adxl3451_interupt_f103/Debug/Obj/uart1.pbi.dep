@@ -1,0 +1,9 @@
+uart1.pbi: \
+  E:\stm8_project\adxl345\adxl345_serial\0.iic_adxl3451_interupt_f103\Bsp\uart1.c \
+  E:\stm8_project\adxl345\adxl345_serial\0.iic_adxl3451_interupt_f103\pbdata.h \
+  C:\Program\ Files\ (x86)\IAR\ Systems\Embedded\ Workbench\ 8.3\stm8\inc\iostm8s103F3.h \
+  C:\Program\ Files\ (x86)\IAR\ Systems\Embedded\ Workbench\ 8.3\stm8\inc/io_macros.h \
+  E:\stm8_project\adxl345\adxl345_serial\0.iic_adxl3451_interupt_f103\Bsp\uart1.h \
+  E:\stm8_project\adxl345\adxl345_serial\0.iic_adxl3451_interupt_f103\Bsp\iic.h \
+  E:\stm8_project\adxl345\adxl345_serial\0.iic_adxl3451_interupt_f103\Bsp\adxl345.h \
+  E:\stm8_project\adxl345\adxl345_serial\0.iic_adxl3451_interupt_f103\Bsp/iic.h

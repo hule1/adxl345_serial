@@ -35,7 +35,7 @@ class Draw:
         self.app.exec_()
 
     def Serial(self):
-        portx = 'COM5'
+        portx = 'COM7'
         bps = 9600
         # 串口执行到这已经打开 再用open命令会报错
         self.mSerial = serial.Serial(portx, int(bps))
@@ -100,4 +100,4 @@ class Draw:
 
 if __name__ == '__main__':
     draw = Draw()
-    draw = draw.main()
+    draw.main()
